@@ -10,7 +10,6 @@ import java.util.TreeSet;
 
 @Entity
 public class Notification extends BasicEntity {
-    @Column(nullable = false)
     @ManyToOne
     private User user;
 
