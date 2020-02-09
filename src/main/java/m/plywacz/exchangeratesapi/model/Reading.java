@@ -4,13 +4,15 @@ Author: BeGieU
 Date: 08.02.2020
 */
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 public class Reading extends BasicEntity implements Comparable<Reading> {
-    private LocalDate date;
+    @Column(nullable = false, updatable = false)
+    private LocalDate dateOfRead;
+
+    @Column(nullable = false, updatable = false)
     private Long currencyValue;
 
     @ManyToOne
@@ -21,17 +23,17 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
 
     @Override
     public int compareTo(Reading other) {
-        return this.date.compareTo(other.date);
+        return this.dateOfRead.compareTo(other.dateOfRead);
     }
     //todo insert toString and Equals hashcode, when POJO is finished
 
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDateOfRead() {
+        return dateOfRead;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateOfRead(LocalDate date) {
+        this.dateOfRead = date;
     }
 
     public Long getCurrencyValue() {
