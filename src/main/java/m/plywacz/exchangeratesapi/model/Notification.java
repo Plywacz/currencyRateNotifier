@@ -26,6 +26,9 @@ public class Notification extends BasicEntity {
     @Column(nullable = false)
     private int frequency;
 
+    @Column(nullable = false)
+    private double sendingFloor;  //when the value is reached, job should send notifying mail
+
     public Notification() {
     }
 
@@ -66,5 +69,17 @@ public class Notification extends BasicEntity {
 
     public void setFrequency(int frequency) {
         this.frequency = frequency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public double getSendingFloor() {
+        return sendingFloor;
+    }
+
+    public void setSendingFloor(double sendingFloor) {
+        this.sendingFloor = sendingFloor;
     }
 }

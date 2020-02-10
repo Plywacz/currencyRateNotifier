@@ -9,21 +9,25 @@ import m.plywacz.exchangeratesapi.exceptions.ResourceNotFoundException;
 import m.plywacz.exchangeratesapi.model.Notification;
 import m.plywacz.exchangeratesapi.repo.NotificationRepo;
 import m.plywacz.exchangeratesapi.repo.UserRepo;
+import m.plywacz.exchangeratesapi.services.schedule.JobManager;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepo notificationRepo;
     private final UserRepo userRepo;
+    private final JobManager jobManager;
 
-    public NotificationServiceImpl(NotificationRepo notificationRepo, UserRepo userRepo) {
+    public NotificationServiceImpl(NotificationRepo notificationRepo, UserRepo userRepo, JobManager jobManager) {
         this.notificationRepo = notificationRepo;
         this.userRepo = userRepo;
+        this.jobManager = jobManager;
     }
 
     @Override public Notification addNotification(NotificationDto notificationDto) {
         var newNotification = insertNotificationToDb(notificationDto);
 
+        jobManager.scheduleJob(newNotification);
 
         return newNotification;
     }

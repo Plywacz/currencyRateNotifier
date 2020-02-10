@@ -7,6 +7,7 @@ Date: 08.02.2020
 public enum Currency {
     PLN("PLN"),
     EUR("EUR"),
+    USD("USD"),
     GBP("GBP"),
     CHF("CHF"),
     JPY("JPY");

@@ -13,7 +13,10 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
     private LocalDate dateOfRead;
 
     @Column(nullable = false, updatable = false)
-    private Long currencyValue;
+    private Double currencyValue;
+
+    @Column(nullable = false, updatable = false,columnDefinition = "VARCHAR(8)")
+    private Currency currency;
 
     @ManyToOne
     private Notification notification;
@@ -36,13 +39,27 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
         this.dateOfRead = date;
     }
 
-    public Long getCurrencyValue() {
+    public Double getCurrencyValue() {
         return currencyValue;
     }
 
-    public void setCurrencyValue(Long currencyValue) {
+    public void setCurrencyValue(Double currencyValue) {
         this.currencyValue = currencyValue;
     }
 
+    public Currency getCurrency() {
+        return currency;
+    }
 
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public Notification getNotification() {
+        return notification;
+    }
+
+    public void setNotification(Notification notification) {
+        this.notification = notification;
+    }
 }
