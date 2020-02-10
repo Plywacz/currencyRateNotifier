@@ -5,5 +5,19 @@ Date: 08.02.2020
 */
 
 public enum Currency {
-    PLN,EUR,GBP,CHF,JPY;
+    PLN("PLN"),
+    EUR("EUR"),
+    GBP("GBP"),
+    CHF("CHF"),
+    JPY("JPY");
+
+    Currency(String strVal) {
+        this.strVal = strVal;
+    }
+
+    private String strVal;
+
+    public String getStrVal() {
+        return strVal;
+    }
 }

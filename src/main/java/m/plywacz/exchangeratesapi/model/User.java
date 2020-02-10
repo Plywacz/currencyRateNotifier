@@ -27,6 +27,11 @@ public class User extends BasicEntity {
     public User() {
     }
 
+    public User addNotification(Notification notification) {
+        notifications.add(notification);
+        return this;
+    }
+
     public String getFirstName() {
         return firstName;
     }

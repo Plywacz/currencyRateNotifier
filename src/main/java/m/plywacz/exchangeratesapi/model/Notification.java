@@ -4,6 +4,9 @@ Author: BeGieU
 Date: 08.02.2020
 */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import m.plywacz.exchangeratesapi.exceptions.IncorrectInputException;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.TreeSet;
@@ -16,18 +19,21 @@ public class Notification extends BasicEntity {
     @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL)
     private final Set<Reading> readings = new TreeSet<>();
 
-    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false,columnDefinition = "VARCHAR(8)")
     private Currency currency;
 
     @Column(nullable = false)
-    private long frequency;
+    private int frequency;
 
     public Notification() {
     }
 
+
     //todo insert toString and Equals hashcode, when POJO is finished
 
 
+    @JsonIgnore
     public User getUser() {
         return user;
     }
@@ -44,15 +50,21 @@ public class Notification extends BasicEntity {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCurrency(String currency) {
+        //todo handle exception
+        try {
+            this.currency = Currency.valueOf(currency);
+        }
+        catch (IllegalArgumentException e) {
+            throw new IncorrectInputException(e, "currency", currency, "couldn't find appropriate enum value");
+        }
     }
 
-    public long getFrequency() {
+    public int getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(long frequency) {
+    public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
 }
