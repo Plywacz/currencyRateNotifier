@@ -8,10 +8,10 @@ import javax.validation.constraints.NotBlank;
 
 public class NotificationDto {
     private final Long userId;
-    private final Long frequency;
+    private final int frequency;
     private final String currency;
 
-    public NotificationDto(@NotBlank Long userId, @NotBlank Long frequency, @NotBlank String currency) {
+    public NotificationDto(@NotBlank Long userId, int frequency, @NotBlank String currency) {
         this.userId = userId;
         this.frequency = frequency;
         this.currency = currency;
@@ -21,7 +21,7 @@ public class NotificationDto {
         return userId;
     }
 
-    public Long getFrequency() {
+    public int getFrequency() {
         return frequency;
     }
 
