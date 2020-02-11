@@ -16,7 +16,7 @@ public class Notification extends BasicEntity {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "notification",fetch = FetchType.EAGER) //
     private final Set<Reading> readings = new TreeSet<>();
 
     @Enumerated(value = EnumType.STRING)
