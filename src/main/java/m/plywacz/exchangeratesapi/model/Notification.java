@@ -20,18 +20,21 @@ public class Notification extends BasicEntity {
     private final Set<Reading> readings = new TreeSet<>();
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false,columnDefinition = "VARCHAR(8)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(8)")
     private Currency currency;
 
     @Column(nullable = false)
     private int frequency;
 
     @Column(nullable = false)
-    private double sendingFloor;  //when the value is reached, job should send notifying mail
+    private double sendingValue;  //when the value is reached, job should send notifying mail
 
     public Notification() {
     }
 
+    public void addReading(Reading reading) {
+        this.readings.add(reading);
+    }
 
     //todo insert toString and Equals hashcode, when POJO is finished
 
@@ -75,11 +78,11 @@ public class Notification extends BasicEntity {
         this.currency = currency;
     }
 
-    public double getSendingFloor() {
-        return sendingFloor;
+    public double getSendingValue() {
+        return sendingValue;
     }
 
-    public void setSendingFloor(double sendingFloor) {
-        this.sendingFloor = sendingFloor;
+    public void setSendingValue(double sendingFloor) {
+        this.sendingValue = sendingFloor;
     }
 }

@@ -4,6 +4,8 @@ Author: BeGieU
 Date: 08.02.2020
 */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -15,6 +17,7 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
     @Column(nullable = false, updatable = false)
     private Double currencyValue;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, updatable = false,columnDefinition = "VARCHAR(8)")
     private Currency currency;
 
@@ -55,6 +58,7 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
         this.currency = currency;
     }
 
+    @JsonIgnore
     public Notification getNotification() {
         return notification;
     }
