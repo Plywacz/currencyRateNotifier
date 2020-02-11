@@ -20,7 +20,8 @@ public class DBJobSynchronizer implements CommandLineRunner {
         this.jobManager = jobManager;
     }
 
-    @Override public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
         synchronizeJobs();
     }
 

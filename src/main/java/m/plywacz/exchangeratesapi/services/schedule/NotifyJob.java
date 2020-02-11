@@ -17,6 +17,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -45,7 +46,7 @@ public class NotifyJob implements Job {
         insertReadingToDb(notification, currencyValue);
 
         if (currencyValue >= notification.getSendingValue())
-            //mailSender.sendNotification(notification);      todo uncomment, delete below sout also
+            mailSender.sendNotification(notification);
 
         System.out.println("doing job for notification with id: "+ notification.getId());
     }
@@ -54,6 +55,7 @@ public class NotifyJob implements Job {
         //without this conversion currencyVal says Base value in given currency i.e 1 PLN is 0.25 EUR
         return 1 / currencyVal; //i want to have given currencyVal expressed with base value. i.e 1 EUR is  4.25 PLN
     }
+
 
     private void insertReadingToDb(Notification notification, Double currencyValue) {
         var reading = new Reading();

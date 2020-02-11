@@ -8,6 +8,8 @@ import m.plywacz.exchangeratesapi.model.Notification;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class JobManagerImpl implements JobManager {
     private final Scheduler scheduler;
@@ -47,13 +49,12 @@ public class JobManagerImpl implements JobManager {
                 .withSchedule(
                         SimpleScheduleBuilder
                                 .simpleSchedule()
-                                .withIntervalInSeconds(frequency)
+                                .withIntervalInHours(frequency)
                                 //.withRepeatCount(DEFAULT_REPEAT_COUNT)
                                 .repeatForever()
                 ).build();
     }
     //============
-
 
     @Override
     public void killJob(Notification notification) {

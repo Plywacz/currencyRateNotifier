@@ -11,8 +11,11 @@ import m.plywacz.exchangeratesapi.model.User;
 import m.plywacz.exchangeratesapi.repo.NotificationRepo;
 import m.plywacz.exchangeratesapi.repo.UserRepo;
 import m.plywacz.exchangeratesapi.services.schedule.JobManager;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /*
@@ -41,8 +44,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private Notification insertNotificationToDb(NotificationDto notificationDto) {
-        var userOpt = userRepo.findById(notificationDto.getUserId());
-        var user = userOpt.orElseThrow(() -> new ResourceNotFoundException("user with id: " + notificationDto.getUserId()));
+        var user = userRepo.findById(notificationDto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("user with id: " + notificationDto.getUserId()));
 
         Notification newNotification = convertDto(notificationDto, user);
         user.addNotification(newNotification);
@@ -77,4 +80,5 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepo.delete(notification);
         jobManager.killJob(notification);
     }
+
 }
