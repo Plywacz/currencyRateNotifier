@@ -4,18 +4,26 @@ Author: BeGieU
 Date: 09.02.2020
 */
 
+import m.plywacz.exchangeratesapi.constraints.IsName;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class UserDto {
+    @IsName(message = "User's last name has to start with Capital letter and rest has to be small")
+    @Size(min = 2,max = 100,message = "User's first name must be at least 2 characters long")
     private final String firstName;
 
+    @IsName(message = "User's last name has to start with Capital letter and rest has to be small")
+    @Size(min = 2,max = 100,message = "User's last name must be at least 2 characters long")
     private final String lastName;
 
+    @NotBlank
+    @Email(message = "provide well formatted email")
     private final String email;
 
-    public UserDto(@NotBlank String firstName,
-                   @NotBlank String lastName,
-                   @NotBlank String email) {
+    public UserDto(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
