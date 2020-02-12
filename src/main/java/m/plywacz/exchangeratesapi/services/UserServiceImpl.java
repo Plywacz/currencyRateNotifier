@@ -5,6 +5,7 @@ Date: 09.02.2020
 */
 
 import m.plywacz.exchangeratesapi.dto.UserDto;
+import m.plywacz.exchangeratesapi.exceptions.EntityDuplicateException;
 import m.plywacz.exchangeratesapi.exceptions.ResourceNotFoundException;
 import m.plywacz.exchangeratesapi.model.User;
 import m.plywacz.exchangeratesapi.repo.UserRepo;
@@ -14,19 +15,22 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
 
-
     public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
     @Override public User saveUser(UserDto userDto) {
-        User user = convertDto(userDto);
+        if (userRepo.existsByLastNameAndFirstName(
+                userDto.getLastName(), userDto.getFirstName())) {
+            throw new EntityDuplicateException("User with given firstName: " + userDto.getFirstName() +
+                    "and lastName: " + userDto.getLastName() + "already exists in DB");
+        }
+
+        var user = convertDto(userDto);
         return userRepo.save(user);
     }
 
     private User convertDto(UserDto userDto) {
-        //todo add exception handling
-
         var user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -35,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override public User listUser(Long userId) {
-        return userRepo.findById(userId).orElseThrow(
+        return userRepo.findById(userId).orElseThrow( //todo add exception handling
                 () -> new ResourceNotFoundException("user with id: " + userId));
     }
 }
