@@ -4,6 +4,8 @@ Author: BeGieU
 Date: 12.02.2020
 */
 
+import m.plywacz.exchangeratesapi.exceptions.IncorrectJsonInputException;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -16,13 +18,15 @@ public class NameValidator implements ConstraintValidator<Name, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        var result = true;
 
         var chars = value.toCharArray();
         for (int i = 1; i < chars.length; i++) {
-            if (!isSmallLetter(chars[i])|| isDigit(chars[i]))
-                return false;
+            if (!isSmallLetter(chars[i]) || isDigit(chars[i]))
+                result = false;
         }
-        return isCapitalLetter(chars[0])&& ! isDigit(chars[0]);
+        return result && !value.isBlank() && isCapitalLetter(chars[0]) && !isDigit(chars[0]);
+
     }
 
     private boolean isSmallLetter(char letter) {

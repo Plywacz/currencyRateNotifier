@@ -5,7 +5,7 @@ Date: 08.02.2020
 */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import m.plywacz.exchangeratesapi.exceptions.IncorrectInputException;
+import m.plywacz.exchangeratesapi.exceptions.IncorrectJsonInputException;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -62,7 +62,7 @@ public class Notification extends BasicEntity {
             this.currency = Currency.valueOf(currency);
         }
         catch (IllegalArgumentException e) {
-            throw new IncorrectInputException(e, "currency", currency, "couldn't find appropriate enum value");
+            throw new IncorrectJsonInputException(e, "currency", currency, "couldn't find appropriate enum value");
         }
     }
 
