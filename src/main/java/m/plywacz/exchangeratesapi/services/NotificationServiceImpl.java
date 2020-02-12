@@ -5,6 +5,7 @@ Date: 09.02.2020
 */
 
 import m.plywacz.exchangeratesapi.dto.NotificationDto;
+import m.plywacz.exchangeratesapi.exceptions.EntityDuplicateException;
 import m.plywacz.exchangeratesapi.exceptions.ResourceNotFoundException;
 import m.plywacz.exchangeratesapi.model.Notification;
 import m.plywacz.exchangeratesapi.model.User;
@@ -36,6 +37,13 @@ public class NotificationServiceImpl implements NotificationService {
 
     //adds notification to db and to quartz scheduler
     @Override public Notification addNotification(NotificationDto notificationDto) {
+        if (notificationRepo.existsByCurrencyAndFrequencyAndSendingValueAndUserId(
+                notificationDto.getCurrencyEnum(), notificationDto.getFrequency(),
+                notificationDto.getCurrencyVal(), notificationDto.getUserId()
+        )) {
+            throw new EntityDuplicateException("Same notification already exists in db");
+        }
+
         var newNotification = insertNotificationToDb(notificationDto);
 
         jobManager.scheduleJob(newNotification);
@@ -50,9 +58,10 @@ public class NotificationServiceImpl implements NotificationService {
         Notification newNotification = convertDto(notificationDto, user);
         user.addNotification(newNotification);
 
-        notificationRepo.save(newNotification);
+        var savedNotification=notificationRepo.save(newNotification);
         userRepo.save(user);
-        return newNotification;
+
+        return savedNotification;
     }
 
     private Notification convertDto(NotificationDto notificationDto, User user) {

@@ -24,15 +24,15 @@ public class NotificationDto {
     private final String currency;
 
     @NotNull
-    @Positive(message = "Currency value be positive number")
-    private final Double currencyVal;
+    @Positive(message = "Sending notification value should be positive number")
+    private final Double sendingValue;
 
     public NotificationDto(Long userId, int frequency,
                            String currency, double currencyVal) {
         this.userId = userId;
         this.frequency = frequency;
         this.currency = currency;
-        this.currencyVal = currencyVal;
+        this.sendingValue = currencyVal;
     }
 
     public Long getUserId() {
@@ -47,7 +47,11 @@ public class NotificationDto {
         return currency;
     }
 
+    public m.plywacz.exchangeratesapi.model.Currency getCurrencyEnum() {
+        return m.plywacz.exchangeratesapi.model.Currency.valueOf(currency);
+    }
+
     public double getCurrencyVal() {
-        return currencyVal;
+        return sendingValue;
     }
 }

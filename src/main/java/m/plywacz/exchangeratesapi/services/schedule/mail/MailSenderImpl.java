@@ -50,11 +50,12 @@ public class MailSenderImpl implements MailSender {
                     InternetAddress.parse(notification.getUser().getEmail())
             );
             message.setSubject("Currency rate alert");
-            message.setText("Alert: your currency exceed given value: "+ notification.getSendingValue());
+            message.setText("Alert: your currency" + notification.getCurrency().toString() +
+                    " exceed given value: " + notification.getSendingValue());
 
             Transport.send(message);
 
-            System.out.println("Alert msg sent to: "+ notification.getUser().getEmail());
+            System.out.println("Alert msg sent to: " + notification.getUser().getEmail());
         }
         catch (MessagingException e) {//kill this job when mail issues occurs
             e.printStackTrace();
