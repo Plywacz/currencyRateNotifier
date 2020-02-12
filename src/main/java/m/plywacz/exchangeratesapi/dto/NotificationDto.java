@@ -4,16 +4,31 @@ Author: BeGieU
 Date: 09.02.2020
 */
 
-import javax.validation.constraints.NotBlank;
+import m.plywacz.exchangeratesapi.constraints.Currency;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class NotificationDto {
+    @NotNull
+    @Min(value = 0, message = "User's id must be positive integer")
     private final Long userId;
-    private final int frequency;
-    private final String currency;
-    private final double currencyVal;
 
-    public NotificationDto(@NotBlank Long userId, @NotBlank int frequency,
-                           @NotBlank String currency, @NotBlank double currencyVal) {
+    @NotNull
+    @Min(value = 0, message = "Frequency of currency rate verification must be positive integer, [hours]")
+    private final int frequency;
+
+    @NotNull
+    @Currency(message = "Given currency value is invalid either unsupported. Supported values: EUR, USD, GBP, CHF, JPY")
+    private final String currency;
+
+    @NotNull
+    @Positive(message = "Currency value be positive number")
+    private final Double currencyVal;
+
+    public NotificationDto(Long userId, int frequency,
+                           String currency, double currencyVal) {
         this.userId = userId;
         this.frequency = frequency;
         this.currency = currency;

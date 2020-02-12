@@ -9,9 +9,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import static java.lang.Character.isDigit;
 
-public class NameValidator implements ConstraintValidator<IsName, String> {
+public class NameValidator implements ConstraintValidator<Name, String> {
     @Override
-    public void initialize(IsName constraintAnnotation) {
+    public void initialize(Name constraintAnnotation) {
     }
 
     @Override

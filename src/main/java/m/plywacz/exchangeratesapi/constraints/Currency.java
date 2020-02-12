@@ -9,12 +9,11 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = NameValidator.class)
+@Constraint(validatedBy = CurrencyValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IsName {
+public @interface Currency {
     String message() default "Field should contain only letters";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
-
