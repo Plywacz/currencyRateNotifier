@@ -60,5 +60,26 @@ public class User extends BasicEntity {
         return notifications;
     }
 
-    //todo insert toString and Equals hashcode, when POJO is finished
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User otherUser = (User) o;
+        return Objects.equals(this.getId(), otherUser.getId());
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(this.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", notifications=" + notifications +
+                "} " + super.toString();
+    }
 }

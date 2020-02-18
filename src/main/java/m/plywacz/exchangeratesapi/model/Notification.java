@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import m.plywacz.exchangeratesapi.exceptions.IncorrectJsonInputException;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -16,7 +17,7 @@ public class Notification extends BasicEntity {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "notification",fetch = FetchType.EAGER,cascade = CascadeType.ALL) //
+    @OneToMany(mappedBy = "notification", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //
     private final Set<Reading> readings = new TreeSet<>();
 
     @Enumerated(value = EnumType.STRING)
@@ -35,9 +36,6 @@ public class Notification extends BasicEntity {
     public void addReading(Reading reading) {
         this.readings.add(reading);
     }
-
-    //todo insert toString and Equals hashcode, when POJO is finished
-
 
     @JsonIgnore
     public User getUser() {
@@ -84,5 +82,28 @@ public class Notification extends BasicEntity {
 
     public void setSendingValue(double sendingFloor) {
         this.sendingValue = sendingFloor;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Notification otherNot = (Notification) o;
+        return Objects.equals(this.getId(), otherNot.getId());
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(this.getId());
+    }
+
+    @Override public String toString() {
+        return "Notification{" +
+                "user=" + user +
+                ", readings=" + readings +
+                ", currency=" + currency +
+                ", frequency=" + frequency +
+                ", sendingValue=" + sendingValue +
+                "} " + super.toString();
     }
 }

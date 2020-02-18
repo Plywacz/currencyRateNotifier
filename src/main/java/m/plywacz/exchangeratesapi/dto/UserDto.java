@@ -9,6 +9,7 @@ import m.plywacz.exchangeratesapi.constraints.Name;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 public class UserDto {
 
@@ -40,5 +41,28 @@ public class UserDto {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(firstName, userDto.firstName) &&
+                Objects.equals(lastName, userDto.lastName) &&
+                Objects.equals(email, userDto.email);
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(firstName, lastName, email);
+    }
+
+    @Override public String toString() {
+        return "UserDto{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

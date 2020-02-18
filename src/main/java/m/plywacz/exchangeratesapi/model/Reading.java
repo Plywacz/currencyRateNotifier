@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Reading extends BasicEntity implements Comparable<Reading> {
@@ -18,7 +19,7 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
     private Double currencyValue;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false, updatable = false,columnDefinition = "VARCHAR(8)")
+    @Column(nullable = false, updatable = false, columnDefinition = "VARCHAR(8)")
     private Currency currency;
 
     @ManyToOne
@@ -65,5 +66,27 @@ public class Reading extends BasicEntity implements Comparable<Reading> {
 
     public void setNotification(Notification notification) {
         this.notification = notification;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Reading otherReading = (Reading) o;
+        return Objects.equals(this.getId(), otherReading.getId());
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(this.getId());
+    }
+
+    @Override public String toString() {
+        return "Reading{" +
+                "dateOfRead=" + dateOfRead +
+                ", currencyValue=" + currencyValue +
+                ", currency=" + currency +
+                ", notification=" + notification +
+                "} " + super.toString();
     }
 }

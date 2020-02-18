@@ -9,6 +9,7 @@ import m.plywacz.exchangeratesapi.constraints.Currency;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Objects;
 
 public class NotificationDto {
     @NotNull
@@ -53,5 +54,30 @@ public class NotificationDto {
 
     public double getCurrencyVal() {
         return sendingValue;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        NotificationDto that = (NotificationDto) o;
+        return frequency == that.frequency &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(currency, that.currency) &&
+                Objects.equals(sendingValue, that.sendingValue);
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(userId, frequency, currency, sendingValue);
+    }
+
+    @Override public String toString() {
+        return "NotificationDto{" +
+                "userId=" + userId +
+                ", frequency=" + frequency +
+                ", currency='" + currency + '\'' +
+                ", sendingValue=" + sendingValue +
+                '}';
     }
 }
