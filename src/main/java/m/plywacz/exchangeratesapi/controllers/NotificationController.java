@@ -10,6 +10,7 @@ import m.plywacz.exchangeratesapi.exceptions.ResourceNotFoundException;
 import m.plywacz.exchangeratesapi.model.Notification;
 import m.plywacz.exchangeratesapi.services.NotificationService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +27,7 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Notification addNotification(@RequestBody @Valid NotificationDto notificationDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors())
@@ -33,11 +35,13 @@ public class NotificationController {
         return notificationService.addNotification(notificationDto);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public List<Notification> getAllNotifications() {
         return notificationService.getAllNotification();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteNotification(@PathVariable Long id) {
         notificationService.deleteNotification(id);

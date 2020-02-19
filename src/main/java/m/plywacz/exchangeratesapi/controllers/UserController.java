@@ -5,6 +5,7 @@ import m.plywacz.exchangeratesapi.model.User;
 import m.plywacz.exchangeratesapi.repo.UserRepo;
 import m.plywacz.exchangeratesapi.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +33,7 @@ public class UserController {
         return userService.saveUser(userDto);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{userId}")
     public User listUser(@PathVariable Long userId) {
         return userService.listUser(userId);

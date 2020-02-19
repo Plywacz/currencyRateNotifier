@@ -1,9 +1,10 @@
-package m.plywacz.exchangeratesapi.config;
+package m.plywacz.exchangeratesapi.config.app;
 
 import m.plywacz.exchangeratesapi.model.Currency;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.util.UriTemplate;
 
 
@@ -27,5 +28,9 @@ public class AppConfig {
 
         var expandedURI = uriTemplate.expand(uriVariables);
         return expandedURI.toURL();
+    }
+    @Bean
+    public BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 }

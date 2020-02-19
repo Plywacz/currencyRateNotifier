@@ -13,11 +13,11 @@ import java.util.Objects;
 
 public class UserDto {
 
-    @Size(min = 2,max = 100,message = "User's first name must be at least 2 characters long")
+    @Size(min = 2, max = 100, message = "User's first name must be at least 2 characters long")
     @Name(message = "User's last name has to start with Capital letter and rest has to be small")
     private final String firstName;
 
-    @Size(min = 2,max = 100,message = "User's last name must be at least 2 characters long")
+    @Size(min = 2, max = 100, message = "User's last name must be at least 2 characters long")
     @Name(message = "User's last name has to start with Capital letter and rest has to be small")
     private final String lastName;
 
@@ -25,10 +25,19 @@ public class UserDto {
     @Email(message = "provide well formatted email")
     private final String email;
 
-    public UserDto(String firstName, String lastName, String email) {
+    @Size(min = 6, max = 30, message = "User's username must be at least 6 characters long")
+    private final String username;
+
+    @Size(min = 6, max = 30, message = "User's password must be at least 6 characters long")
+    private final String password;
+
+    public UserDto(String firstName, String lastName, String email,
+                   String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -41,6 +50,14 @@ public class UserDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override public boolean equals(Object o) {
