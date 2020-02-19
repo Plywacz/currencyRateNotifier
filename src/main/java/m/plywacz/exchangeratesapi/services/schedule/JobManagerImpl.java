@@ -61,6 +61,7 @@ public class JobManagerImpl implements JobManager {
         var jobId = new JobKey(notification.getId().toString());
         try {
             scheduler.deleteJob(jobId);
+            System.out.println("killed job with id: "+ jobId);
         }
         catch (SchedulerException e) {
             e.printStackTrace();

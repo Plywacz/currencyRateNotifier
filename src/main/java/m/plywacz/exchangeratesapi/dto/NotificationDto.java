@@ -29,11 +29,11 @@ public class NotificationDto {
     private final Double sendingValue;
 
     public NotificationDto(Long userId, int frequency,
-                           String currency, double currencyVal) {
+                           String currency, double sendingValue) {
         this.userId = userId;
         this.frequency = frequency;
         this.currency = currency;
-        this.sendingValue = currencyVal;
+        this.sendingValue = sendingValue;
     }
 
     public Long getUserId() {

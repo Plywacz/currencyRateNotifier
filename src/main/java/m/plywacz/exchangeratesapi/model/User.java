@@ -4,6 +4,8 @@ Author: BeGieU
 Date: 08.02.2020
 */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -23,6 +25,9 @@ public class User extends BasicEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private final Set<Notification> notifications = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Credentials credentials;
 
     public User() {
     }
@@ -58,6 +63,29 @@ public class User extends BasicEntity {
 
     public Set<Notification> getNotifications() {
         return notifications;
+    }
+
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
+    }
+
+    @JsonIgnore
+    public String getUsername() {
+        return credentials.getUsername();
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return credentials.getPassword();
+    }
+
+    @JsonIgnore
+    public String getRole() {
+        return credentials.getRole();
     }
 
     @Override public boolean equals(Object o) {
