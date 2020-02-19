@@ -1,6 +1,7 @@
 package m.plywacz.exchangeratesapi.config.security;
 
 import io.jsonwebtoken.*;
+import m.plywacz.exchangeratesapi.exceptions.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -63,15 +64,15 @@ public class TokenProvider implements Serializable {
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY*1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
                 .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (
-              username.equals(userDetails.getUsername())
-                    && !isTokenExpired(token));
+                username.equals(userDetails.getUsername())
+                        && !isTokenExpired(token));
     }
 
     UsernamePasswordAuthenticationToken getAuthentication(final String token, final Authentication existingAuth, final UserDetails userDetails) {
@@ -82,8 +83,12 @@ public class TokenProvider implements Serializable {
 
         final Claims claims = claimsJws.getBody();
 
+        final Object authKey = claims.get(AUTHORITIES_KEY);
+        if (authKey == null)
+            throw new InvalidTokenException("invalid token provided");
+
         final Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                Arrays.stream(authKey.toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 

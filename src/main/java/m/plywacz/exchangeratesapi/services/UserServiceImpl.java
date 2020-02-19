@@ -12,6 +12,7 @@ import m.plywacz.exchangeratesapi.model.User;
 import m.plywacz.exchangeratesapi.repo.CredentialsRepo;
 import m.plywacz.exchangeratesapi.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,8 +27,12 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     public static final String USER_ROLE = "USER";
+    public static final String ADMIN_ROLE = "ADMIN";
 
-    private  final BCryptPasswordEncoder encoder; //
+    @Value("${security.admin_key}")
+    private String adminKey;
+
+    private final BCryptPasswordEncoder encoder; //
 
     private final UserRepo userRepo;
     private final CredentialsRepo credentialsRepo;
@@ -51,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         var credentials = new Credentials();
         credentials.setUsername(userDto.getUsername());
         credentials.setPassword(encoder.encode(userDto.getPassword()));
-        credentials.setRole(USER_ROLE);
+        determineUserRole(credentials,userDto);
 
         var user = new User();
         user.setFirstName(userDto.getFirstName());
@@ -65,6 +70,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         credentialsRepo.save(credentials);
 
         return savedUser;
+    }
+
+    private void determineUserRole(Credentials credentials, UserDto userDto) {
+        if (userDto.getAdminKey() != null && userDto.getAdminKey().equals(this.adminKey))
+            credentials.setRole(ADMIN_ROLE);
+        else
+            credentials.setRole(USER_ROLE);
     }
 
     @Override public User listUser(Long userId) {
@@ -90,7 +102,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Autowired
-    void insertSampleUsers() { //loads admin and basic user on startup
+    void insertSampleUsersOnStartUp() { //loads admin and basic user on startup
         if (userRepo.findAll().size() != 0) //in case ddl-auto set on update, prevents default user duplication
             return;
 

@@ -4,6 +4,7 @@ Author: BeGieU
 Date: 09.02.2020
 */
 
+import com.sun.istack.Nullable;
 import m.plywacz.exchangeratesapi.constraints.Name;
 
 import javax.validation.constraints.Email;
@@ -31,13 +32,17 @@ public class UserDto {
     @Size(min = 6, max = 30, message = "User's password must be at least 6 characters long")
     private final String password;
 
+    @Nullable
+    private final String adminKey;
+
     public UserDto(String firstName, String lastName, String email,
-                   String username, String password) {
+                   String username, String password, String adminKey) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
+        this.adminKey = adminKey;
     }
 
     public String getFirstName() {
@@ -58,6 +63,10 @@ public class UserDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getAdminKey() {
+        return adminKey;
     }
 
     @Override public boolean equals(Object o) {
